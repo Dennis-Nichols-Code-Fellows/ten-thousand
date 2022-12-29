@@ -7,7 +7,7 @@ class GameLogic:
     def __init__(self):
         self.keep_playing = True
         self.game_score = 0
-        self.round_score = 0
+        self.round_dice = []
         self.round = 1
 
     @staticmethod
@@ -66,7 +66,7 @@ class GameLogic:
         print(f'Thanks for playing. You earned {self.game_score}')
         self.keep_playing = False
 
-    def roll_logic(self, round_score, dice = 6):
+    def roll_logic(self, dice=6):
         print(f'Rolling {dice} dice...')
         roll = self.roll_dice(dice)
         roll_str = [str(x) for x in roll]
@@ -75,15 +75,14 @@ class GameLogic:
         if user_kept == 'q':
             self.quit_game()
         kept_dice, dice_to_reroll = self.kept_dice(user_kept, roll)
+        self.round_dice.extend(kept_dice)
         print(
-            f'You have {self.calculate_score(kept_dice) + round_score} unbanked points and {dice_to_reroll} dice remaining\n(r)oll again, (b)ank your points or (q)uit:')
+            f'You have {self.calculate_score(tuple(self.round_dice))} unbanked points and {dice_to_reroll} dice remaining\n(r)oll again, (b)ank your points or (q)uit:')
         choice = input(f'> ')
         if choice == 'r':
-            self.round_score += self.calculate_score(kept_dice)
-            self.roll_logic(self.round_score, dice_to_reroll)
+            self.roll_logic(dice_to_reroll)
         elif choice == 'b':
-            print(f"You banked {self.calculate_score(kept_dice) + round_score} points in round {self.round}")
-            self.game_score += self.calculate_score(kept_dice) + round_score
+            self.game_score += self.calculate_score(tuple(self.round_dice))
             print(f'Total score is {self.game_score} points')
             self.round += 1
             self.round_logic()
@@ -91,7 +90,7 @@ class GameLogic:
             self.quit_game()
 
     def round_logic(self):
-        self.round_score = 0
+        self.round_dice = []
         if self.game_score >= 10000:
             print(f'You won the game with a score of {self.game_score}!!')
             again = input('Play again? (y)es or (n)o')
@@ -101,7 +100,7 @@ class GameLogic:
                 self.quit_game()
 
         print(f'Starting round {self.round}')
-        self.roll_logic(self.round_score)
+        self.roll_logic()
 
     def play(self):
         while self.keep_playing:
