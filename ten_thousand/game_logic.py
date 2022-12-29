@@ -77,12 +77,13 @@ class GameLogic:
         kept_dice, dice_to_reroll = self.kept_dice(user_kept, roll)
         self.round_dice.extend(kept_dice)
         print(
-            f'You have {self.calculate_score(tuple(self.round_dice))} unbanked points and {dice_to_reroll} dice remaining\n(r)oll again, (b)ank your points or (q)uit:')
+            f'You have {self.calculate_score(self.round_dice)} unbanked points and {dice_to_reroll} dice remaining\n(r)oll again, (b)ank your points or (q)uit:')
         choice = input(f'> ')
         if choice == 'r':
             self.roll_logic(dice_to_reroll)
         elif choice == 'b':
-            self.game_score += self.calculate_score(tuple(self.round_dice))
+            print(f'You banked {self.calculate_score(self.round_dice)} points in round {self.round}')
+            self.game_score += self.calculate_score(self.round_dice)
             print(f'Total score is {self.game_score} points')
             self.round += 1
             self.round_logic()
