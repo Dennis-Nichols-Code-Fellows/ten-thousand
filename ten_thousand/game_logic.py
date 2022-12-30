@@ -87,7 +87,7 @@ class GameLogic:
         return True
 
     def quit_game(self):
-        print(f'Thanks for playing. You earned {self.game_score}')
+        print(f'Thanks for playing. You earned {self.game_score} points')
         self.keep_playing = False
 
     @staticmethod
@@ -97,16 +97,22 @@ class GameLogic:
 
     def roll_validation(self, roll):
         self.print_roll(roll)
-        user_kept = input('Enter dice to keep, or (q)uit:')
+        user_kept = input('Enter dice to keep, or (q)uit: ')
         if user_kept == 'q':
             self.quit_game()
-        kept_dice, dice_to_reroll = self.kept_dice(user_kept, roll)
-        if self.calculate_score(kept_dice) == 1500 or len(self.get_scorers(roll)) == 6:
-            dice_to_reroll = 6
-        if not self.validate_keepers(roll, kept_dice):
-            print("Cheater!!! Or possibly made a typo...")
-            self.roll_validation(roll)
-        return kept_dice, dice_to_reroll
+            kept_dice = []
+            dice_to_reroll = 0
+            quit_game = True
+            return kept_dice, dice_to_reroll, quit_game
+
+        else:
+            kept_dice, dice_to_reroll = self.kept_dice(user_kept, roll)
+            if self.calculate_score(kept_dice) == 1500 or len(self.get_scorers(roll)) == 6:
+                dice_to_reroll = 6
+            if not self.validate_keepers(roll, kept_dice):
+                print("Cheater!!! Or possibly made a typo...")
+                self.roll_validation(roll)
+            return kept_dice, dice_to_reroll
 
     def round_end(self):
         print(f'You banked {self.calculate_score(self.round_dice)} points in round {self.round}')
@@ -130,7 +136,9 @@ class GameLogic:
         print(f'Rolling {dice} dice...')
         roll = self.roll_dice(dice)
         self.zilcher(roll)
-        kept_dice, reroll_dice = self.roll_validation(roll)
+        kept_dice, reroll_dice, quit_game = self.roll_validation(roll)
+        if quit_game:
+            return
         self.round_dice.extend(kept_dice)
 
         print(
