@@ -3,6 +3,19 @@
 ## Project - Ten-Thousand Game
 ### Author: Dennis Nichols
 
+## Links
+
+- [Game logic code](https://github.com/Dennis-Nichols-Code-Fellows/ten-thousand/blob/main/ten_thousand/game_logic.py)
+- [Main.py](https://github.com/Dennis-Nichols-Code-Fellows/ten-thousand/blob/main/ten_thousand/main.py
+
+## Set-up
+
+None
+
+## Resources
+
+None
+
 ## How to Run
 
 - `python main.py`
