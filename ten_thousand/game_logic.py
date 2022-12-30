@@ -107,12 +107,13 @@ class GameLogic:
 
         else:
             kept_dice, dice_to_reroll = self.kept_dice(user_kept, roll)
+            quit_game = False
             if self.calculate_score(kept_dice) == 1500 or len(self.get_scorers(roll)) == 6:
                 dice_to_reroll = 6
             if not self.validate_keepers(roll, kept_dice):
                 print("Cheater!!! Or possibly made a typo...")
                 self.roll_validation(roll)
-            return kept_dice, dice_to_reroll
+            return kept_dice, dice_to_reroll, quit_game
 
     def round_end(self):
         print(f'You banked {self.calculate_score(self.round_dice)} points in round {self.round}')
