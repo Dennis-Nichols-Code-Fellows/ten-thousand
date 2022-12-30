@@ -101,7 +101,7 @@ class GameLogic:
         if user_kept == 'q':
             self.quit_game()
         kept_dice, dice_to_reroll = self.kept_dice(user_kept, roll)
-        if self.calculate_score(kept_dice) == 1500:
+        if self.calculate_score(kept_dice) == 1500 or len(self.get_scorers(roll)):
             dice_to_reroll = 6
         if not self.validate_keepers(roll, kept_dice):
             print("Cheater!!! Or possibly made a typo...")
