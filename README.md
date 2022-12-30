@@ -18,3 +18,7 @@
     - Straight
     - Three pairs
 - Day 2 - No tests, but made game output match that demonstrated by the sim files
+- Day 3 - Tested validate keepers function
+  - tested valid input
+  - tested 'cheater' input
+  - tested out of range input
